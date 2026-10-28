@@ -1,0 +1,425 @@
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Domaine à vendre</title>
+<style>
+  /* Layout: single centered column on an inked field — oversized monospace domain as the hero, one offer card below. */
+  :root{
+    --bg:#F6F7FB; --surface:#FFFFFF; --surface-2:#EFF1F7;
+    --fg:#10131A; --muted:#5A6475; --line:#E2E6EF;
+    --accent:#2F5FEA; --accent-fg:#FFFFFF; --ring:rgba(47,95,234,.30);
+    --good:#1C8F5A;
+    --font-sans:"Hanken Grotesk",system-ui,-apple-system,Segoe UI,sans-serif;
+    --font-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --maxw:720px;
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --bg:#0C0E14; --surface:#141824; --surface-2:#1B2030;
+    --fg:#ECEEF3; --muted:#99A2B5; --line:#272D3D;
+    --accent:#5B8CFF; --accent-fg:#0A0D16; --ring:rgba(91,140,255,.40);
+    --good:#3FD08A; color-scheme:dark;
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0C0E14; --surface:#141824; --surface-2:#1B2030;
+    --fg:#ECEEF3; --muted:#99A2B5; --line:#272D3D;
+    --accent:#5B8CFF; --accent-fg:#0A0D16; --ring:rgba(91,140,255,.40);
+    --good:#3FD08A; color-scheme:dark;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    font-family:var(--font-sans); background:var(--bg); color:var(--fg);
+    line-height:1.55; -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(circle at 50% 0%, color-mix(in srgb,var(--accent) 7%, transparent), transparent 55%),
+      linear-gradient(to right, color-mix(in srgb,var(--line) 55%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb,var(--line) 55%, transparent) 1px, transparent 1px);
+    background-size:100% 100%, 46px 46px, 46px 46px;
+    background-position:center top;
+  }
+  .wrap{
+    max-width:var(--maxw); margin:0 auto; min-height:100%;
+    padding-left:max(16px,env(safe-area-inset-left,0px));
+    padding-right:max(16px,env(safe-area-inset-right,0px));
+    padding-block:clamp(22px,5vh,52px);
+    display:flex; flex-direction:column; gap:clamp(26px,5vh,46px);
+  }
+
+  /* top bar */
+  .top{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap}
+  .badge{
+    font-family:var(--font-mono); font-size:.72rem; font-weight:600; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--accent);
+    display:inline-flex; align-items:center; gap:.5em;
+    border:1px solid color-mix(in srgb,var(--accent) 35%, var(--line));
+    background:color-mix(in srgb,var(--accent) 9%, transparent);
+    padding:.42em .8em; border-radius:999px;
+  }
+  .badge .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 22%,transparent)}
+  .lang{display:inline-flex; border:1px solid var(--line); border-radius:999px; overflow:hidden; font-family:var(--font-mono); font-size:.76rem}
+  .lang button{
+    appearance:none; border:0; background:transparent; color:var(--muted);
+    padding:.4em .75em; cursor:pointer; font:inherit; letter-spacing:.04em;
+  }
+  .lang button[aria-pressed="true"]{background:var(--surface-2); color:var(--fg)}
+  .lang button:focus-visible{outline:2px solid var(--accent); outline-offset:-2px}
+
+  /* hero */
+  .hero{display:flex; flex-direction:column; gap:14px}
+  .domain{
+    font-family:var(--font-mono); font-weight:500;
+    font-size:clamp(2.1rem,9vw,4.3rem); line-height:1.02; letter-spacing:-.01em;
+    word-break:break-word; margin:0; text-wrap:balance;
+  }
+  .domain .tld{color:var(--accent)}
+  .tagline{font-size:clamp(1.05rem,2.6vw,1.3rem); color:var(--fg); font-weight:500; margin:0; text-wrap:balance}
+  .sub{color:var(--muted); font-size:1rem; margin:0; max-width:52ch}
+  .price{margin:0; display:inline-flex; align-items:baseline; gap:.5em; align-self:flex-start;
+    font-family:var(--font-mono); border:1px solid var(--line); background:var(--surface);
+    border-radius:10px; padding:.5em .8em}
+  .price .plabel{font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
+  .price .pval{font-size:1.15rem; font-weight:600; color:var(--fg)}
+
+  /* card */
+  .card{
+    background:var(--surface); border:1px solid var(--line); border-radius:16px;
+    padding:clamp(20px,4vw,30px);
+    box-shadow:0 1px 0 color-mix(in srgb,var(--fg) 4%,transparent), 0 18px 40px -28px color-mix(in srgb,var(--fg) 40%,transparent);
+    display:flex; flex-direction:column; gap:18px; min-width:0;
+  }
+  .card h2{margin:0; font-size:1.18rem; font-weight:700; letter-spacing:-.01em}
+  form{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+  .field{display:flex; flex-direction:column; gap:6px; min-width:0}
+  .field.full{grid-column:1 / -1}
+  label{font-family:var(--font-mono); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}
+  input,textarea{
+    font-family:var(--font-sans); font-size:1rem; color:var(--fg);
+    background:var(--surface-2); border:1px solid var(--line); border-radius:10px;
+    padding:11px 13px; width:100%; min-width:0; resize:vertical;
+  }
+  input::placeholder,textarea::placeholder{color:color-mix(in srgb,var(--muted) 75%,transparent)}
+  input:focus,textarea:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--ring)}
+  .err{color:#D23B3B; font-size:.82rem; min-height:0}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .err{color:#FF8A8A}}
+  :root[data-theme="dark"] .err{color:#FF8A8A}
+
+  .actions{display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin-top:2px}
+  .btn{
+    appearance:none; cursor:pointer; font:inherit; font-weight:600; letter-spacing:.01em;
+    border-radius:10px; padding:12px 20px; border:1px solid transparent; font-size:1rem;
+  }
+  .btn-primary{background:var(--accent); color:var(--accent-fg)}
+  .btn-primary:hover{filter:brightness(1.06)}
+  .btn-ghost{background:transparent; color:var(--fg); border-color:var(--line)}
+  .btn-ghost:hover{background:var(--surface-2)}
+  .btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+  .sep{color:var(--muted); font-size:.9rem}
+
+  /* confirmation */
+  .confirm{display:flex; flex-direction:column; gap:14px}
+  .confirm h2{display:flex; align-items:center; gap:.5em}
+  .check{width:22px;height:22px;flex:none;color:var(--good)}
+  .msgbox{
+    font-family:var(--font-mono); font-size:.84rem; white-space:pre-wrap; word-break:break-word;
+    background:var(--surface-2); border:1px solid var(--line); border-radius:10px; padding:14px; color:var(--fg);
+  }
+  .mailrow{display:flex; flex-wrap:wrap; align-items:center; gap:10px}
+  .mail{font-family:var(--font-mono); font-size:.95rem; color:var(--accent); user-select:all; word-break:break-all}
+
+  /* trust */
+  .trust{display:flex; flex-wrap:wrap; gap:10px 22px; color:var(--muted); font-size:.9rem}
+  .trust span{display:inline-flex; align-items:center; gap:.5em}
+  .trust svg{width:15px;height:15px;color:var(--accent);flex:none}
+
+  .foot{color:var(--muted); font-size:.85rem; display:flex; flex-wrap:wrap; gap:6px 14px; align-items:center}
+  .foot .mail{font-size:.85rem}
+
+  /* preview-only switcher */
+  .preview{display:none; flex-wrap:wrap; align-items:center; gap:8px;
+    border:1px dashed color-mix(in srgb,var(--accent) 40%,var(--line)); border-radius:12px; padding:12px 14px;
+    background:color-mix(in srgb,var(--accent) 5%,transparent)}
+  .preview.on{display:flex}
+  .preview .plabel{font-family:var(--font-mono); font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); width:100%}
+  .chip{appearance:none; cursor:pointer; font-family:var(--font-mono); font-size:.8rem; border:1px solid var(--line);
+    background:var(--surface); color:var(--muted); padding:.35em .7em; border-radius:999px}
+  .chip[aria-pressed="true"]{border-color:var(--accent); color:var(--fg); background:color-mix(in srgb,var(--accent) 12%,transparent)}
+  .chip:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
+
+  @media (max-width:560px){ form{grid-template-columns:1fr} }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  [hidden]{display:none!important}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <span class="badge"><span class="dot"></span><span data-t="forsale">For sale</span></span>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+    </div>
+  </header>
+
+  <div class="preview" id="preview">
+    <span class="plabel">Preview only — hidden on the published site</span>
+  </div>
+
+  <section class="hero">
+    <h1 class="domain" id="domain">example.ai</h1>
+    <p class="tagline" id="tagline">A premium domain name, available now.</p>
+    <p class="price" id="price"></p>
+    <p class="sub" data-t="sub">This domain is available to purchase. Send an offer below and I’ll reply quickly.</p>
+  </section>
+
+  <section class="card" id="offerCard">
+    <h2 data-t="makeOffer">Make an offer</h2>
+    <form id="offerForm" novalidate>
+      <div class="field">
+        <label for="f-name" data-t="name">Your name</label>
+        <input id="f-name" name="name" type="text" autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="f-email" data-t="email">Your email</label>
+        <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email">
+      </div>
+      <div class="field">
+        <label for="f-offer" data-t="offer">Your offer (USD / EUR)</label>
+        <input id="f-offer" name="offer" type="text" inputmode="decimal" placeholder="e.g. 3,000">
+      </div>
+      <div class="field">
+        <label for="f-budget" data-t="timeline">Timeline</label>
+        <input id="f-budget" name="timeline" type="text" placeholder="e.g. ready to buy now">
+      </div>
+      <div class="field full">
+        <label for="f-msg" data-t="message">Message (optional)</label>
+        <textarea id="f-msg" name="message" rows="3"></textarea>
+      </div>
+      <div class="field full err" id="formErr" aria-live="polite"></div>
+      <div class="field full actions">
+        <button type="submit" class="btn btn-primary" data-t="send">Send offer</button>
+        <span class="sep" id="orSep" hidden data-t="or">or</span>
+        <a class="btn btn-ghost" id="marketBtn" hidden target="_blank" rel="noopener" data-t="buySecure">Buy now on Sedo</a>
+      </div>
+    </form>
+
+    <div class="confirm" id="confirm" hidden>
+      <h2><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span data-t="readyTitle">Your offer is ready</span></h2>
+      <p class="sub" data-t="readyBody">Your email app should open. If it didn’t, copy the message below and send it to:</p>
+      <div class="mailrow"><span class="mail" id="confirmMail">name@example.com</span>
+        <button type="button" class="btn btn-ghost" id="copyMail" data-t="copy">Copy</button></div>
+      <div class="msgbox" id="confirmMsg"></div>
+      <button type="button" class="btn btn-ghost" id="copyMsg" style="align-self:flex-start" data-t="copyMsg">Copy message</button>
+    </div>
+  </section>
+
+  <section class="trust">
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span data-t="trust1">Secure transfer via escrow</span></span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg><span data-t="trust2">Fast, direct response</span></span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg><span data-t="trust3">Clean ownership, ready to transfer</span></span>
+  </section>
+
+  <footer class="foot">
+    <span data-t="contactLabel">Prefer email? Reach me directly at</span>
+    <span class="mail" id="footMail">name@example.com</span>
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ============ CONFIG — edit these two lines per your setup ============ */
+  var CONFIG = {
+    contactEmail: "thomas@minerve.ai",     // where offers are sent
+    marketplaceUrl: "",                    // optional: paste a Sedo "Buy now" URL to show the button; leave "" to hide
+    defaultDomain: "baycore.eu",           // shown only in preview / if the host can't be read
+    minOffer: 10000                        // offers below this (in $) are refused by the form
+  };
+  /* Domains used for the on-screen preview switcher (ignored on the live site) */
+  var PREVIEW_DOMAINS = ["baycore.ai","baycore.eu","baycore.fr","physikal.fr","physiqal.ai","fabr.ai","greeny.ai","lifr.ai","savr.ai"];
+  /* ===================================================================== */
+
+  var STR = {
+    en:{forsale:"For sale",sub:"This domain is available to purchase. Send an offer below and I’ll reply quickly.",
+        makeOffer:"Make an offer",name:"Your name",email:"Your email",offer:"Your offer (USD / EUR)",
+        timeline:"Timeline",message:"Message (optional)",send:"Send offer",or:"or",buySecure:"Buy now on Sedo",
+        readyTitle:"Your offer is ready",readyBody:"Your email app should open. If it didn’t, copy the message below and send it to:",
+        copy:"Copy",copyMsg:"Copy message",copied:"Copied",contactLabel:"Prefer email? Reach me directly at",
+        trust1:"Secure transfer via escrow",trust2:"Fast, direct response",trust3:"Clean ownership, ready to transfer",
+        eName:"Please enter your name.",eEmail:"Please enter a valid email.",eOffer:"Please enter an offer amount.",
+        tAi:"A short, memorable .ai name for your AI product.",tFr:"A premium name for your brand in France.",
+        tEu:"A premium name for your brand across Europe.",tDef:"A premium domain name, available now.",
+        priceFrom:"From",minLabel:"Minimum offer",offerPh:"min. ",
+        eMin:"Offers below {min} aren’t considered — please enter {min} or more.",
+        subj:function(d){return "Offer for "+d;},
+        line:{domain:"Domain",name:"Name",email:"Email",offer:"Offer",timeline:"Timeline",message:"Message"}},
+    fr:{forsale:"À vendre",sub:"Ce nom de domaine est à vendre. Laissez une offre ci-dessous, je vous réponds rapidement.",
+        makeOffer:"Faire une offre",name:"Votre nom",email:"Votre e-mail",offer:"Votre offre (USD / EUR)",
+        timeline:"Échéance",message:"Message (optionnel)",send:"Envoyer l’offre",or:"ou",buySecure:"Acheter sur Sedo",
+        readyTitle:"Votre offre est prête",readyBody:"Votre messagerie devrait s’ouvrir. Sinon, copiez le message ci-dessous et envoyez-le à :",
+        copy:"Copier",copyMsg:"Copier le message",copied:"Copié",contactLabel:"Vous préférez l’e-mail ? Écrivez-moi à",
+        trust1:"Transfert sécurisé via séquestre",trust2:"Réponse rapide et directe",trust3:"Propriété nette, prête au transfert",
+        eName:"Indiquez votre nom.",eEmail:"Indiquez un e-mail valide.",eOffer:"Indiquez un montant d’offre.",
+        tAi:"Un nom .ai court et mémorable pour votre produit d’IA.",tFr:"Un nom premium pour votre marque en France.",
+        tEu:"Un nom premium pour votre marque en Europe.",tDef:"Un nom de domaine premium, disponible maintenant.",
+        priceFrom:"À partir de",minLabel:"Offre minimale",offerPh:"min. ",
+        eMin:"Les offres inférieures à {min} ne sont pas prises en compte — indiquez {min} ou plus.",
+        subj:function(d){return "Offre pour "+d;},
+        line:{domain:"Domaine",name:"Nom",email:"E-mail",offer:"Offre",timeline:"Échéance",message:"Message"}}
+  };
+
+  var $=function(s){return document.querySelector(s);};
+  var store={get:function(k){try{return localStorage.getItem(k);}catch(e){return null;}},
+             set:function(k,v){try{localStorage.setItem(k,v);}catch(e){}}};
+
+  function money(n){
+    try{ return lang==="fr" ? n.toLocaleString("fr-FR")+" $" : "$"+n.toLocaleString("en-US"); }
+    catch(e){ return "$"+n; }
+  }
+  function parseOffer(s){
+    s=(s||"").toString().trim().toLowerCase().replace(/[$€£\s]/g,"");
+    if(!s) return NaN;
+    var mult=1;
+    if(/k$/.test(s)){mult=1000;s=s.slice(0,-1);}
+    else if(/m$/.test(s)){mult=1000000;s=s.slice(0,-1);}
+    s=s.replace(/[.,](?=\d{3}(\D|$))/g,"").replace(/,/g,".");
+    var n=parseFloat(s);
+    return isNaN(n)?NaN:n*mult;
+  }
+
+  /* ---- domain detection ---- */
+  function isPreviewHost(h){
+    return !h || h==="localhost" || /^\d+\./.test(h) ||
+      /(^|\.)claude\.ai$/.test(h) || /claudeusercontent\.com$/.test(h) ||
+      /\.anthropic\.com$/.test(h);
+  }
+  function hashDomain(){
+    var h=decodeURIComponent((location.hash||"").replace(/^#/,"")).trim().toLowerCase();
+    return /^[a-z0-9-]+(\.[a-z0-9-]+)+$/.test(h)?h:"";
+  }
+  var HOST=location.hostname.replace(/^www\./,"").toLowerCase();
+  var PREVIEW=isPreviewHost(HOST);
+  function resolveDomain(){
+    if(PREVIEW) return hashDomain()||store.get("previewDomain")||CONFIG.defaultDomain;
+    return (HOST&&HOST.indexOf(".")>-1)?HOST:CONFIG.defaultDomain;
+  }
+  var domain=resolveDomain();
+
+  /* ---- language ---- */
+  var lang=store.get("lang");
+  if(lang!=="en"&&lang!=="fr") lang=(navigator.language||"en").slice(0,2)==="fr"?"fr":"en";
+
+  function tagline(d){
+    var t=STR[lang];
+    if(/\.ai$/.test(d))return t.tAi;
+    if(/\.fr$/.test(d))return t.tFr;
+    if(/\.eu$/.test(d))return t.tEu;
+    return t.tDef;
+  }
+  function renderDomain(){
+    var d=domain, i=d.lastIndexOf(".");
+    var root=i>-1?d.slice(0,i):d, tld=i>-1?d.slice(i):"";
+    var el=$("#domain"); el.textContent="";
+    el.appendChild(document.createTextNode(root));
+    if(tld){var s=document.createElement("span");s.className="tld";s.textContent=tld;el.appendChild(s);}
+    $("#tagline").textContent=tagline(d);
+    document.title=domain+" — "+STR[lang].forsale;
+  }
+
+  function applyLang(){
+    var t=STR[lang];
+    document.querySelectorAll("[data-t]").forEach(function(n){
+      var k=n.getAttribute("data-t"); if(t[k]!==undefined) n.textContent=t[k];
+    });
+    document.documentElement.lang=lang;
+    document.querySelectorAll(".lang button").forEach(function(b){
+      b.setAttribute("aria-pressed", b.getAttribute("data-lang")===lang?"true":"false");
+    });
+    $("#tagline").textContent=tagline(domain);
+    $("#confirmMail").textContent=CONFIG.contactEmail;
+    $("#footMail").textContent=CONFIG.contactEmail;
+    document.title=domain+" — "+t.forsale;
+
+    var pr=$("#price"); pr.textContent="";
+    var pl=document.createElement("span"); pl.className="plabel"; pl.textContent=t.priceFrom;
+    var pvv=document.createElement("span"); pvv.className="pval"; pvv.textContent=money(CONFIG.minOffer);
+    pr.appendChild(pl); pr.appendChild(pvv);
+    $("#f-offer").setAttribute("placeholder", t.offerPh+money(CONFIG.minOffer));
+  }
+
+  document.querySelectorAll(".lang button").forEach(function(b){
+    b.addEventListener("click",function(){ lang=b.getAttribute("data-lang"); store.set("lang",lang); applyLang(); });
+  });
+
+  /* ---- marketplace button ---- */
+  if(CONFIG.marketplaceUrl){
+    var mb=$("#marketBtn"); mb.href=CONFIG.marketplaceUrl; mb.hidden=false; $("#orSep").hidden=false;
+  }
+
+  /* ---- preview switcher ---- */
+  if(PREVIEW){
+    var pv=$("#preview"); pv.classList.add("on");
+    PREVIEW_DOMAINS.forEach(function(d){
+      var c=document.createElement("button"); c.type="button"; c.className="chip"; c.textContent=d;
+      c.setAttribute("aria-pressed", d===domain?"true":"false");
+      c.addEventListener("click",function(){
+        domain=d; store.set("previewDomain",d);
+        pv.querySelectorAll(".chip").forEach(function(x){x.setAttribute("aria-pressed",x.textContent===d?"true":"false");});
+        renderDomain();
+      });
+      pv.appendChild(c);
+    });
+  }
+
+  /* ---- offer form ---- */
+  function buildMessage(v){
+    var L=STR[lang].line;
+    return L.domain+": "+domain+"\n"+L.name+": "+v.name+"\n"+L.email+": "+v.email+
+      "\n"+L.offer+": "+v.offer+(v.timeline?"\n"+L.timeline+": "+v.timeline:"")+
+      (v.message?"\n\n"+v.message:"");
+  }
+  function flash(btn,txt){var o=btn.textContent;btn.textContent=txt;setTimeout(function(){btn.textContent=o;},1400);}
+  function copy(text,btn){
+    var done=function(){flash(btn,STR[lang].copied);};
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done).catch(function(){select(text);done();});
+    } else {select(text);done();}
+  }
+  function select(text){
+    var ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.opacity="0";
+    document.body.appendChild(ta);ta.select();try{document.execCommand("copy");}catch(e){}document.body.removeChild(ta);
+  }
+
+  $("#offerForm").addEventListener("submit",function(e){
+    e.preventDefault();
+    var t=STR[lang];
+    var v={name:$("#f-name").value.trim(),email:$("#f-email").value.trim(),
+           offer:$("#f-offer").value.trim(),timeline:$("#f-budget").value.trim(),
+           message:$("#f-msg").value.trim()};
+    var err="";
+    if(!v.name)err=t.eName;
+    else if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v.email))err=t.eEmail;
+    else{
+      var amt=parseOffer(v.offer);
+      if(isNaN(amt)) err=t.eOffer;
+      else if(amt<CONFIG.minOffer) err=t.eMin.replace(/\{min\}/g, money(CONFIG.minOffer));
+    }
+    $("#formErr").textContent=err;
+    if(err){return;}
+
+    var body=buildMessage(v);
+    var mailto="mailto:"+encodeURIComponent(CONFIG.contactEmail)+
+      "?subject="+encodeURIComponent(t.subj(domain))+"&body="+encodeURIComponent(body);
+    try{ if(!PREVIEW){ window.location.href=mailto; } }catch(e){}
+
+    $("#confirmMsg").textContent=body;
+    $("#confirmMail").textContent=CONFIG.contactEmail;
+    $("#offerForm").hidden=true;
+    $("#confirm").hidden=false;
+    $("#confirm").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth", block:"nearest"});
+  });
+
+  $("#copyMail").addEventListener("click",function(){copy(CONFIG.contactEmail,this);});
+  $("#copyMsg").addEventListener("click",function(){copy($("#confirmMsg").textContent,this);});
+
+  renderDomain();
+  applyLang();
+})();
+</script>
