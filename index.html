@@ -310,7 +310,7 @@
 
   /* ---- language ---- */
   var lang=store.get("lang");
-  if(lang!=="en"&&lang!=="fr") lang=(navigator.language||"en").slice(0,2)==="fr"?"fr":"en";
+  if(lang!=="en"&&lang!=="fr") lang="en";
 
   function tagline(d){
     var t=STR[lang];
